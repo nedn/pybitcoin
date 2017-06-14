@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from bitcoin_client import key_utils
+from pybitcoin import key_utils
 
 private_key = key_utils.get_private_key("FEEDB0BDEADBEEF")
 
