@@ -3,7 +3,7 @@
 from bitcoin_client import key_utils
 
 private_key = key_utils.get_private_key("FEEDB0BDEADBEEF")
-public_key = get_public_key(private_key)
+public_key = key_utils.get_public_key(private_key)
 
 print private_key
 print public_key

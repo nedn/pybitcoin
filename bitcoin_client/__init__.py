@@ -1,6 +1,10 @@
 import os
 import sys
 
+if sys.version_info <= (3, 0):
+  sys.stdout.write("Sorry, requires Python 3.x\n")
+  sys.exit(1)
+
 
 def _AddToPathIfNeeded(path):
   if path not in sys.path:
