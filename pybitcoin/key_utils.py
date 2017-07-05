@@ -1,11 +1,16 @@
-import hashlib
 import binascii
+import hashlib
+import os
 
 from ecdsa import SECP256k1, SigningKey
 
 def get_private_key(hex_string):
   # pad the hex string to the required 64 characters
   return bytes.fromhex(hex_string.zfill(64))
+
+
+def get_random_private_key():
+  return os.urandom(32)
 
 
 # From https://en.wikipedia.org/wiki/Base58#cite_note-2 (see 'Bitcoin
