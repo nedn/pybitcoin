@@ -2,6 +2,10 @@
 
 from pybitcoin import key_utils
 
-private_key = key_utils.get_private_key("FEEDB0BDEADBEEF")
+if __name__ == '__main__':
+  private_key_str = input('Enter your private key (32 hex digits): ')
+  private_key = key_utils.get_private_key(private_key_str)
+  print('Wallet import format of private key: %s' %
+        key_utils.get_wallet_import_format(private_key))
+  print('Your public address: %s' % key_utils.get_btc_address(private_key))
 
-key_utils.get_btc_address(private_key)

@@ -1,10 +1,39 @@
 import hashlib
+import binascii
 
 from ecdsa import SECP256k1, SigningKey
 
 def get_private_key(hex_string):
   # pad the hex string to the required 64 characters
   return bytes.fromhex(hex_string.zfill(64))
+
+
+# From https://en.wikipedia.org/wiki/Base58#cite_note-2 (see 'Bitcoin
+# addresses')
+_alphabet = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz'
+def get_base58_encode(bytes_num):
+  num = int.from_bytes(bytes_num, byteorder='big')
+  base_count = len(_alphabet)
+  encode = ''
+  while (num > 0):
+    num, mod = divmod(num, base_count)
+    encode = _alphabet[mod] + encode
+  return encode
+
+
+def get_wallet_import_format(private_key):
+  assert isinstance(private_key, bytes)
+  arr = bytearray(private_key)
+  # 1) Add a 0x80 byte in front of it for mainnet
+  arr.insert(0, 0x80)
+  # 2) Perform SHA-256 hash on the extended key
+  res1 = hashlib.sha256(bytes(arr)).digest()
+  # 2) Perform SHA-256 hash on the extended key
+  res2 = hashlib.sha256(res1).digest()
+  # Take the first 4 bytes of the second SHA-256 hash, this is the checksum
+  checksum = res2[:4]
+  arr.extend(checksum)
+  return get_base58_encode(arr)
 
 
 def get_public_key(private_key):
